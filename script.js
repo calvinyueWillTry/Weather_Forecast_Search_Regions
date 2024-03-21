@@ -3,22 +3,20 @@
 const key = "1015a338e1d99a768c1e1d9c68819134";
 //Allow for input
 const API_Inquiry = ""; 
-
-// Query URL to be fetched
 const inquiry_URL= "http://api.openweathermap.org/data/2.5/forecast";
-//const inquiry_URL= "http://api.openweathermap.org/data/2.5/weather";
+// Query URL to be fetched
+//Tell is to establish a JS variable for the search button on the HTML
+const searchButton = document.getElementById("search");
+//Activate a click function, e.g. $("submit").onclick(getTheWeather)
+//add the click effect to begin the search process
+searchButton.addEventListener('click', getWeather) ;
 
+//const inquiry_URL= "http://api.openweathermap.org/data/2.5/weather";
 //Do I need the city IDs? https://bulk.openweathermap.org/sample/ 
 //{city name},{state code} and/or {country code} or just city?
 //zipcode needs Zip and Country
 //let humidity;
-//Activate a click function, e.g. $("submit").onclick(getTheWeather)
-//add for loop to get 5 day forecast. 
 
-//Tell is to establish a JS variable for the search button on the HTML
-const searchButton = document.getElementById("search");
-//add the click effect to begin the search process
-searchButton.addEventListener('click', getWeather) ;
 // Function to get the data in the first place
 function getWeather() {
     //const city=//jquery to allow the different cities 
@@ -37,6 +35,7 @@ function getWeather() {
     //.then after the data is fully collected and arranged, then go to display the information
         .then((data) => {
             displayCity (data);
+            //for loop here to call function 5 times, 
             /**displayTemperature (data);
             displayWeather(data);
             displaywindSpeed(data);
@@ -45,6 +44,7 @@ function getWeather() {
 };
 //To display the selected information, based on the data pulled from the fetch
 function displayCity (data) {
+    //add parameter location, take an id for where to display
     console.log(data);
     
     // Variables from the data array
@@ -88,7 +88,7 @@ function displayCity (data) {
     // WIND SPEED
     // See similars above
     var WindSpeed = document.createElement("div");
-    WindSpeed.setAttribute("class","indent")
+    WindSpeed.setAttribute("class","indent");
     WindSpeed.innerHTML = 'Wind Speed (meters/sec.):';
     var winding = document.createElement("div");
     winding.innerHTML = speed;
@@ -102,19 +102,71 @@ function displayCity (data) {
     visibleSight.innerHTML = visibility;
 //The following are to be displayed and appended inside <div id = "findings" class="weather-info text-center">
     cityFound.append(title, cityName, titleTemperature, celcius, titleWeather, weatherOverHead,  WindSpeed, winding, titleVisibility, visibleSight);
-    loopDays ()
+    
+    loopDays (data.list) // = weatherArray
+    //A function to loop the data array for 5 days
 };
-//A function to loop the data array for 5 days
-function loopDays () {
+function loopDays (weatherArray) {
     //Needs New function  to consolidate, then loop through
-   //for (var i = 0; i < data.list.length; i+8) { 
-        
+   //for (var i = 0; i < data.list.length; i+8) { }
+    //add for loop to get 5 day forecast. 
+   for (let i = 0; i< weatherArray.length; i += 8) {
+    //console.log(weatherArray[i].dt_txt);
+    //arrays of the variables
+    var forecast = weatherArray[i].dt_txt;
+    var tempForecast = weatherArray[i].main.temp;
+    var weaForecastData = weatherArray[i].weather[0].description;
+    var speedForecast = weatherArray[i].wind.speed;
+    var visibleForecast = weatherArray[i].visibility
+    console.log(visibleForecast);
+
+    //Title for the days of the weather forecasts
+    //Structure: see similars above
+    var titleForecast = document.createElement("p");
+    titleForecast.setAttribute("class","indent");
+    titleForecast.innerHTML = "Days 2-5 of the weather forecast:";
+    var weatherForecast = document.createElement("div");
+    weatherForecast.innerHTML = forecast;
+    //Title and other temperatures at the same time on other days
+    //Structure: see similars above
+    var titleTemp = document.createElement("p");
+    titleTemp.setAttribute("class","indent");
+    titleTemp.innerHTML = "Temperature (Celcius):";
+    var temperatureForecast = document.createElement("div");
+    temperatureForecast.innerHTML = tempForecast;
+    //Do the same for the rest of the info
+    //Title and the weather sky at the same time on other days
+    //Structure: see similars above
+    var titleWea = document.createElement("p");
+    titleWea.setAttribute("class","indent");
+     titleWea.innerHTML = "Weather:";
+    var weaForecast = document.createElement("div");
+    weaForecast.innerHTML = weaForecastData
+    //Title and the wind speed at the same time on other days
+    //Structure: see similars above
+    var titleSpeed = document.createElement("p");
+    titleSpeed.setAttribute("class","indent");
+    titleSpeed.innerHTML = "Wind Speed (meters/sec.):";
+    var speedWindForecast = document.createElement("div");
+    speedWindForecast.innerHTML = speedForecast
+    //Title and the visibility at the same time on other days
+    //Structure: see similars above
+    var titleVisible = document.createElement("p");
+    titleVisible.setAttribute("class","indent");
+    titleVisible.innerHTML = "Visibility (km):";
+    var visibilityForecast = document.createElement("div");
+    visibilityForecast.innerHTML = visibleForecast
+    //Appends this info to the rest of the information for the 1st day. 
+    var cityFound = document.querySelector('#findings');
+    cityFound.append (titleForecast.innerHTML,forecast, titleTemp.innerHTML, tempForecast, titleWea, weaForecastData, titleSpeed.innerHTML, speedForecast, titleVisible.innerHTML, visibleForecast);
+   } 
+   //var weatherForecast = weatherArray[0].dt_txt;
+   //weatherForecast.append(title, cityName, titleTemperature, celcius, titleWeather, weatherOverHead,  WindSpeed, winding, titleVisibility, visibleSight);
     // }
 };
 /**
  * 
  * @param {*} data 
-
 function displayTemperature (data) { 
     var weather = document.querySelector('#findings');
     //weather.innerHTML = "";
