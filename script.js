@@ -109,7 +109,7 @@ function loopDays (weatherArray, city) {
     var titleTemp = document.createElement("p");
     titleTemp.setAttribute("class","indent");
     titleTemp.innerHTML = "Temperature (Celcius):";
-    var temperatureForecast = document.createElement("div");
+    var temperatureForecast = document.createElement("p");
     temperatureForecast.innerHTML = tempForecast;
     //Do the same for the rest of the info
     //Title and the weather sky at the same time on other days
@@ -117,26 +117,26 @@ function loopDays (weatherArray, city) {
     var titleWea = document.createElement("p");
     titleWea.setAttribute("class","indent");
      titleWea.innerHTML = "Weather:";
-    var weaForecast = document.createElement("div");
+    var weaForecast = document.createElement("p");
     weaForecast.innerHTML = weaForecastData
     //Title and the wind speed at the same time on other days
     //Structure: see similars above
     var titleSpeed = document.createElement("p");
     titleSpeed.setAttribute("class","indent");
     titleSpeed.innerHTML = "Wind Speed (meters/sec.):";
-    var speedWindForecast = document.createElement("div");
+    var speedWindForecast = document.createElement("p");
     speedWindForecast.innerHTML = speedForecast
     //Title and the visibility at the same time on other days
     //Structure: see similars above
     var titleVisible = document.createElement("p");
     titleVisible.setAttribute("class","indent");
     titleVisible.innerHTML = "Visibility (km):";
-    var visibilityForecast = document.createElement("div");
+    var visibilityForecast = document.createElement("p");
     visibilityForecast.innerHTML = visibleForecast
     //Appends this info to the rest of the information for the 1st day. 
     var cityFound = document.querySelector('#findings');
-    cityFound.append (titleForecast.innerHTML,forecast, titleTemp.innerHTML, tempForecast, titleWea, weaForecastData, titleSpeed.innerHTML, speedForecast, titleVisible.innerHTML, visibleForecast);
-   } 
+    cityFound.append (titleForecast,forecast, titleTemp, tempForecast, titleWea, weaForecastData, titleSpeed, speedForecast, titleVisible, visibleForecast);
+   } //appending innerHTML doesn't recognize the p element 
   console.log(city)
    storeWeatherData(city)//calls this function
 };
@@ -159,6 +159,7 @@ function storeWeatherData (cityFound) { //city =  cityFound, calls new function 
 function displayWeather(){ //This displays the cities from previous query search at the bottom of the page
     const previous = localStorage.getItem("cityHistory") //gets the key from the Application already stored in localStorage
     const history = document.getElementById("searchhistory") //HTML element to be used to display on the webpage, else it can't appear
+    console.log(history);
     const parsed = JSON.parse(previous) // takes the key, then translates the key from a string into an object 
     parsed.map((searchterm)=>{ //returns the object after looping through the array, however many cities there are after the key, even when refreshed
         const html = document.createElement("p") //formatting to separate cities on the webpage
